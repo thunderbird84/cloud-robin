@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Family Tree</title>
+    <style type="text/css">
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td { margin:0; padding:0; }
+        table { border-collapse:collapse; border-spacing:0; }
+        fieldset,img { border:0; }
+        address,caption,cite,code,dfn,em,strong,th,var { font-style:normal; font-weight:normal; }
+        caption,th { text-align:left; }
+        h1,h2,h3,h4,h5,h6 { font-size:100%; font-weight:normal; }
+        q:before,q:after { content:''; }
+        abbr,acronym { border:0; }
+
+        body { background: #fff; }
+        /* optional Container STYLES */
+        .chart { height: 600px; margin: 5px; width: 900px; }
+        .Treant > .node {  }
+        .Treant > p { font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; font-weight: bold; font-size: 12px; }
+        .node-name { font-weight: bold;}
+
+        .nodeExample1 {
+            padding: 2px;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            background-color: #ffffff;
+            border: 1px solid #000;
+            width: 200px;
+            font-family: Tahoma;
+            font-size: 12px;
+        }
+
+        .nodeExample1 img {
+            margin-right:  10px;
+            width:50px;
+            height:50px;
+            border: solid; 1px #cccccc;
+            border-radius:2px;
+            background-size: contain;
+            background: url(data:image/png;base64,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)
+        }
+
+        .Treant { position: relative; overflow: hidden; padding: 0 !important; }
+        .Treant > .node,
+        .Treant > .pseudo { position: absolute; display: block; visibility: hidden; }
+        .Treant.loaded .node,
+        .Treant.loaded .pseudo { visibility: visible; }
+        .Treant > .pseudo { width: 0; height: 0; border: none; padding: 0; }
+        .Treant .collapse-switch { width: 3px; height: 3px; display: block; border: 1px solid black; position: absolute; top: 1px; right: 1px; cursor: pointer; }
+        .Treant .collapsed .collapse-switch { background-color: #868DEE; }
+        .Treant > .node img {   border: none; float: left; }
+
+    </style>
+    <script type="text/javascript">
+    var chart_config = {
+        chart: {
+            container: "#basic-example",
+            
+            connectors: {
+                type: 'step'
+            },
+            node: {
+                HTMLclass: 'nodeExample1'
+            }
+        },
+        nodeStructure: {
+            text: {
+                name: "Mark Hill",
+                title: "Chief executive officer",
+                contact: "Tel: 01 213 123 134",
+            },
+            image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+            children: [
+                {
+                    text:{
+                        name: "Joe Linux",
+                        title: "Chief Technology Officer",
+                    },
+                    stackChildren: true,
+                    image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    children: [
+                        {
+                            text:{
+                                name: "Ron Blomquist",
+                                title: "Chief Information Security Officer"
+                            },
+                            image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        },
+                        {
+                            text:{
+                                name: "Michael Rubin",
+                                title: "Chief Innovation Officer",
+                                contact: "we@aregreat.com"
+                            },
+                            image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        }
+                    ]
+                },
+                {
+                    stackChildren: true,
+                    text:{
+                        name: "Linda May",
+                        title: "Chief Business Officer",
+                    },
+                    image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    children: [
+                        {                            
+                            text:{
+                                name: "Alice Lopez",
+                                title: "Chief Communications Officer"
+                            },
+                            image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        },
+                        {
+                            text:{
+                                name: "Mary Johnson",
+                                title: "Chief Brand Officer"
+                            },
+                            image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        },
+                        {
+                            text:{
+                                name: "Kirk Douglas",
+                                title: "Chief Business Development Officer"
+                            },
+                            image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        }
+                    ]
+                },
+                {
+                    text:{
+                        name: "John Green",
+                        title: "Chief accounting officer",
+                        contact: "Tel: 01 213 123 134 Tel: 01 213 123 134 Tel: 01 213 123 134 Tel: 01 213 123 134 Tel: 01 213 123 134",
+                    },
+                    image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    children: [
+                        {
+                            text:{
+                                name: "Erica Reel",
+                                title: "Chief Customer Officer"
+                            },
+                            link: {
+                                href: "http://www.google.com"
+                            },
+                            image:"data:data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                        }
+                    ]
+                }
+            ]
+        }
+    };
+    </script>
+    
+</head>
+<body>
+    <div class="chart" id="basic-example"></div>
+    <script src="../lib/raphael.js"></script>
+    <script src="../lib/Treant.js"></script>        
+    <script>
+        new Treant( chart_config );
+    </script>
+</body>
+</html>
