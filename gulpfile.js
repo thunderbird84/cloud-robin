@@ -7,7 +7,8 @@ var mkdirp = require('mkdirp');
 var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
-var zlib = require('zlib');
+//var zlib = require('zlib');
+var rb =require('robin-crypto');
 var osenv = require('osenv');
 var stream = require('stream');
 var streamBuffers = require('stream-buffers');
@@ -61,9 +62,11 @@ gulp.task('enc', function() {
 
 		if(changed){
 			console.log("update changed:" + config.encdir + files[i])
-			var compressed = zlib.gzipSync(content);		
-			var cipher = crypto.createCipher(algorithm, psswd);		
-			var crypted = Buffer.concat([cipher.update(compressed),cipher.final()]).toString('hex');
+			//var compressed = zlib.gzipSync(content);		
+			//var cipher = crypto.createCipher(algorithm, psswd);		
+			//var crypted = Buffer.concat([cipher.update(compressed),cipher.final()]).toString('hex');
+			var rbCrypto = new rb.RobinCrypto(psswd);
+			var crypted = rbCrypto.encrypt(content).toString('hex');
 			fs.writeFileSync(config.encdir + files[i],JSON.stringify({key:hash,data:crypted}));
 		}		
   		
@@ -115,9 +118,12 @@ gulp.task('dec', function() {
 		if(changed){
 			console.log("update changed:" + config.decdir + file);
 			var crypted = new Buffer(json.data, "hex");
-			var decipher = crypto.createDecipher(algorithm,psswd)
-  		    var dec = Buffer.concat([decipher.update(crypted) , decipher.final()]);
-			var content = zlib.unzipSync(dec).toString();
+			//var decipher = crypto.createDecipher(algorithm,psswd)
+  		   // var dec = Buffer.concat([decipher.update(crypted) , decipher.final()]);
+			//var content = zlib.unzipSync(dec).toString();
+			var rbCrypto = new rb.RobinCrypto(psswd);
+			var content = rbCrypto.decrypt(crypted)
+			// console.log(content);
 			fs.writeFileSync(config.decdir + file,content);			
 		}		
   		
