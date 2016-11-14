@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Family Tree</title> 
+    <script type="text/javascript"> 
+   	var _sget_article_url= function () {
+                if (arguments.length < 4) {
+                    throw new TypeError("wrong number of parameter");
+                }
+                var url = arguments[0]
+                var returnUrlParams = arguments[1];
+                var args = [].filter.call(arguments, function (val, idx) {
+                    return idx > 1
+                });
+                var param = args[0], value = args[1];
+                var moreParams = "";
+                for (var i = 2; i < args.length - 1; i++) {
+                    moreParams = "&" + args[i] + "=" + args[i + 1];
+                }
+
+                var qs= function (a) {
+	                if (a == "") return {};
+	                var b = {};
+	                for (var i = 0; i < a.length; ++i) {
+	                    var p = a[i].split('=', 2);
+	                    if (p.length == 1)
+	                        b[p[0]] = "";
+	                    else
+	                        b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+	                }
+	                return b;
+          		}   
+                var parser = document.createElement('a');
+                parser.href = url;
+                var params = qs(parser.search.substr(1).split('&'));
+                var callback = params['callback'];
+
+                var parser2 = document.createElement('a');
+                parser2.href = callback;
+                var search = parser2.search.substr(1);
+                var p = search.split('&');
+                var param2 = qs(parser2.search.substr(1).split('&'));
+                var returnUrl = '';
+                var returnUrlParam = 'callback';
+                for (var i = 0; i < returnUrlParams.length; i++) {
+                    if (typeof  param2[returnUrlParams[i]] != 'undefined') {
+                        returnUrlParam = returnUrlParams[i];
+                        returnUrl = param2[returnUrlParam];
+                        break;
+                    }
+                }
+
+                var redirectToUrlWithForceScript = returnUrl + (returnUrl.indexOf("?") < 0 ? "?" : "&") + param + "=" + value + moreParams;
+                var _search = '?';
+                param2[returnUrlParam] = encodeURIComponent(redirectToUrlWithForceScript);
+                for (var itm in param2) {
+                    _search += itm + '=' + param2[itm] + '&';
+                }
+                parser2.search = _search.substring(0, _search.length - 1);
+                var _search = '?';
+                return encodeURIComponent(parser2.href);
+                
+            };
+
+     var testUrl='https://account.qa.newsplus.se/?appId=sydsvenskan.se&lc=sv&callback=https%3A%2F%2Fsds.h11n.se%2Fauth%3FreturnTo%3Dhttps%3A%2F%2Fsds.h11n.se%2F2016-05-04%2Flagstadieelever-hittade-tva-gevar-pa-skoltaket%3FforceScript%3D1%26callback%3D%253FforceScript%253D1%2526variantType%253Dlarge För att läsa premiumartiklar behöver du göra ett köp';
+
+     var a = _sget_article_url(testUrl,['returnTo'],'','');
+     document.write(a);
+            
+    </script>
+    
+</head>
+<body>
+    
+</body>
+</html>
