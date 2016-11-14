@@ -1,5 +1,6 @@
  var java = require("java");
-java.classpath.push("tools-1.0-SNAPSHOT.jar");
+var path = require('path');
+java.classpath.push(path.resolve(__dirname, './tools-1.0-SNAPSHOT.jar'));
 var Crypto= java.import('robin.tools.Crypto');
 var AES256CtrCrypto= java.import('robin.tools.AES256CtrCrypto');
 var ByteBuffer= java.import('java.nio.ByteBuffer');

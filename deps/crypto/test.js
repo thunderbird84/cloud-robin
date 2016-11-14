@@ -41,8 +41,8 @@ suite.add('#toJavaBuffer', function() {
   assert.equal(nodeBuff.toString(),test.toString());
 })
 .add('#zlib', function() {
-  var test = rb.zLibDecompress(rb.zLibCompress(buf))
-   assert.equal(buf.toString(),test.toString());
+  //var test = rb.zLibDecompressSync(rb.zLibCompressSync(buf))
+  // assert.equal(buf.toString(),test.toString());
    
 })// add listeners 
 .on('cycle', function(event) {
