@@ -36,8 +36,7 @@ gulp.task('enc', function() {
 	var psswd = fs.readFileSync(config.passwd);
 	var lines = psswd.toString('utf-8').split("\n");
 	psswd = lines[0];	
-	var algorithm = 'aes-256-ctr';
-
+	
 
 	var files = glob.sync(config.src);
   	for(var i =0; i < files.length; i++){  		
@@ -61,10 +60,7 @@ gulp.task('enc', function() {
 		}
 
 		if(changed){
-			console.log("update changed:" + config.encdir + files[i])
-			//var compressed = zlib.gzipSync(content);		
-			//var cipher = crypto.createCipher(algorithm, psswd);		
-			//var crypted = Buffer.concat([cipher.update(compressed),cipher.final()]).toString('hex');
+			console.log("update changed:" + config.encdir + files[i])			
 			var rbCrypto = new rb.RobinCrypto(psswd);
 			var crypted = rbCrypto.encrypt(content).toString('hex');
 			fs.writeFileSync(config.encdir + files[i],JSON.stringify({key:hash,data:crypted}));
@@ -73,18 +69,14 @@ gulp.task('enc', function() {
   	}//end loop files
 });
 
-gulp.task('dec', function() {
-	//var decrypt = crypto.createDecipher(algorithm, password)
-	//var unzip = zlib.createGunzip();
-	//r.pipe(decrypt).pipe(unzip)
+gulp.task('dec', function() {	
   	if (!fs.existsSync(config.passwd)) { 
 		throw new Error('password is required');
 	}
 	var psswd = fs.readFileSync(config.passwd);
 	var lines = psswd.toString('utf-8').split("\n");
 	psswd = lines[0];	
-	var algorithm = 'aes-256-ctr';
-
+	
 
 	var files = glob.sync([config.encdir+"/**/*.*"]);
   	for(var i =0; i < files.length; i++){ 
@@ -97,13 +89,6 @@ gulp.task('dec', function() {
   		//console.log(config.decdir + path.dirname(files[i]).substring(5));  		
   				
   		
-
-  		//process.exit();
-  		
-		
-		//console.log(config.decdir + file);
-		//var waitTill = new Date(new Date().getTime() +  1000);
-		//while(waitTill > new Date()){}
 		var changed =true;		
   		if (fs.existsSync(config.decdir + file)) { 
   			var content = fs.readFileSync(config.decdir + file);
@@ -117,10 +102,7 @@ gulp.task('dec', function() {
 
 		if(changed){
 			console.log("update changed:" + config.decdir + file);
-			var crypted = new Buffer(json.data, "hex");
-			//var decipher = crypto.createDecipher(algorithm,psswd)
-  		   // var dec = Buffer.concat([decipher.update(crypted) , decipher.final()]);
-			//var content = zlib.unzipSync(dec).toString();
+			var crypted = new Buffer(json.data, "hex");			
 			var rbCrypto = new rb.RobinCrypto(psswd);
 			var content = rbCrypto.decrypt(crypted)
 			// console.log(content);
