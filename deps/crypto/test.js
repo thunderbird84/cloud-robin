@@ -16,11 +16,19 @@ rb.hello();
 var rbCrypto = new rb.RobinCrypto('123412344gfgfgdg gdfgdfgfg dfggfgfgf fgfg');
 
 console.log(rbCrypto.decrypt(rbCrypto.encrypt(buf)).toString());
+var enc = rbCrypto.encrypt(new Buffer("test String"));
+
+fs.writeFileSync('test-data',enc.toString('hex'));
+var rb1 = new rb.RobinCrypto('123412344gfgfgdg gdfgdfgfg dfggfgfgf fgfg');
+var tt = rb1.decrypt(enc).toString();
+
+console.log(tt);
+
 var rand =function () {
     n = Math.random()*1e17;
     return (n+"").substr(1,10000);
    }
-//process.exit();
+process.exit();
 console.log("\nPERFORMANCE TEST\n-----------------------\n")
 var suite = new Benchmark.Suite; 
 suite.add('#toJavaBuffer', function() {
